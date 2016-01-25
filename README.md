@@ -32,4 +32,3 @@ Why did we go to the trouble of creating a directory and then creating the meteo
 1. Clone this repo: ```git clone https://github.com/CodeChron/intro-to-meteor-react.git```
 2. Cd into the repo: ```cd intro-to-meteor-react```
 
-
