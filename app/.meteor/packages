@@ -22,3 +22,5 @@ react
 kadira:flow-router
 kadira:react-layout
 twbs:bootstrap
+accounts-password
+msavin:mongol
