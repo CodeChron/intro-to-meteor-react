@@ -35,8 +35,7 @@ Why did we go to the trouble of creating a directory and then creating the meteo
 ##Sidebar: Comparing Blaze and React
 When installing a Meteor app, by default it uses [Blaze](https://github.com/meteor/blaze) for handling the view layer.  If you're interested in understanding how Blaze and React differ, [check out this sidebar](https://github.com/CodeChron/react-v-blaze), in which I've re-created the default Meteor app functionality using React, and then discuss some key differences.
 
-
-## Step 2: The React Component Hierarchy
+## The React Component Hierarchy
 React is based on component relationships and hierarchies, and the model encourages taking a visual approach to defining your app.  (See [Thinking in React - “Start with a mock”](https://facebook.github.io/react/docs/thinking-in-react.html).) Therefore, let's start with some mockups of the app views we'll be creating:
 
 ![app-views](https://cloud.githubusercontent.com/assets/819213/12585736/57349d88-c41b-11e5-8032-692898d72335.png)
@@ -78,14 +77,49 @@ Let's look at some of the major components we've defined here, and their respect
 - Only a small number of components are "controller" components, ie they handle data and events.  I try to limit controllers to be the app-level component and the view-level components.
 
 
+## Step 2: React Setup 
+- In this step, we'll do the basic setup for using React in a Meteor app.
+- Install react package: Be sure you are in the app directory, then enter ```meteor add react```
+- In the same directory remove the default html/css/js files: ```rm app*```
+- Create a client directory (which tells meteor to only use those files on the client side): ```mkdir clients```
+- Add a components directory and an index.html file to this directory: ```mkdir client/components```, ```touch client/index.html```
+- Add the following placeholder for the React app in the index.html file:
+```html
+<body>
+  <div id="react-root"></div>
+</body>
+```
+
+- Add the App component (note the jsx extension and title case file name): ```touch client/components/App.jsx```
+
+```js  
+App = React.createClass({
+  render() {
+    return (
+      <div className="app-container">
+      (App Content)
+     </div>
+    );
+  }
+});
+```
+- Associate the app component with the placeholder on startup: ```touch client/startup.jsx``
+
+```js
+Meteor.startup(function () {
+  ReactDOM.render(<App />, document.getElementById("react-root"));
+});
+```
+
+- You should now see the text '(App Content)' in your browser.
 
 
-
-
-
+## Step 3:Routing and Main App Views
+- Remove the default files: ```rm app*```
+- Install the packages we'll need for this step: 
+- Add Bootstrap for basic look and feel
 
 ## Step 3: Add Routing and Main App Views 
-- Discuss controller components)
 - Add Bootstrap for basic look and feel
 
 ## Step 4: Add Login/Authentication
