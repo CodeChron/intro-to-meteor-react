@@ -37,15 +37,51 @@ When installing a Meteor app, by default it uses [Blaze](https://github.com/mete
 
 
 ## Step 2: The React Component Hierarchy
-React is based on component relationships and hierarchies, and the model strongly encourages taking a visual approach to defining your app.  (See [Thinking in React - “Start with a mock”](https://facebook.github.io/react/docs/thinking-in-react.html).) Therefore, let's start with some mockups of the app views we'll be creating:
+React is based on component relationships and hierarchies, and the model encourages taking a visual approach to defining your app.  (See [Thinking in React - “Start with a mock”](https://facebook.github.io/react/docs/thinking-in-react.html).) Therefore, let's start with some mockups of the app views we'll be creating:
 
 ![app-views](https://cloud.githubusercontent.com/assets/819213/12585736/57349d88-c41b-11e5-8032-692898d72335.png)
 
-Our next step is to sketch out our component hierarchy based on this UI:
+Our app will have three main views: Homepage, login, and registration.  Next, let's look at a possible component hierarchy for one of these views, the homepage:
 
-![component_hierarchy-04](https://cloud.githubusercontent.com/assets/819213/12585857/da58c36a-c41b-11e5-94ab-f906c4e6be2b.png)
+![components-homepage](https://cloud.githubusercontent.com/assets/819213/12586611/f4755792-c41e-11e5-8e74-4a8f9c90229c.png)
 
-Let's look at some of the major components we've defined here.
+Let's look at some of the major components we've defined here, and their respective responsibilities.
+
+### App Component
+- DATA/PARAMS: Users, current route
+
+### App Header
+- Just a container
+
+### App Title
+- You guessed it, display the app title
+
+### Dropdown
+- Display a list of links.
+- The instance invoked in the app header will be displaying user actions.
+
+### Tasks List (Homepage)
+- This is the "controller" component for the homepage.
+- DATA: Tasks
+- Handle Tasks CRUD
+
+### Page Title
+- Display the page title for a given view.
+
+### List
+- Listing items and much more.  This is a rich component, with many (optional) features. We'll discuss it in more detail later.
+
+
+#### A few things to note about these components
+- If possible, we try define components in terms of their abstract UI role or behavior rather than their specific instance usage.  For example, while our "Dropdown" component really is a User Nav in the specific instance where it is used, defining it more abstractly promote designing more reusable components.
+- If possible, we try to keep componenents "Dumb" ie they will just accept properties and not really be responsible for handling data, etc.
+- Only a small number of components are "controller" components, ie they handle data and events.  I try to limit controllers to be the app-level component and the view-level components.
+
+
+
+
+
+
 
 
 ## Step 3: Add Routing and Main App Views 
