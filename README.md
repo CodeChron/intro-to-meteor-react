@@ -70,7 +70,6 @@ Let's look at some of the major components we've defined here, and their respect
 ### List
 - Listing items and much more.  This is a rich component, with many (optional) features. We'll discuss it in more detail later.
 
-
 #### A few things to note about these components
 - If possible, we try define components in terms of their abstract UI role or behavior rather than their specific instance usage.  For example, while our "Dropdown" component really is a User Nav in the specific instance where it is used, defining it more abstractly promote designing more reusable components.
 - If possible, we try to keep componenents "Dumb" ie they will just accept properties and not really be responsible for handling data, etc.
@@ -190,7 +189,113 @@ App = React.createClass({
 *Get caught up to this step*
 - Check out the Step 3 branch: ```git checkout 03-routing``` 
 
-## Step 4: Add Login View/Basic Authentication
+
+## Step 4: Add AppHeader and UserNav Dropdown (no data)
+- Let's add an AppHeader with a UserNav, so users can view their login info, and/or sign/register.
+- Add the file ```/client/components/layout/AppHeader.jsx``` with this code:
+
+```js
+AppHeader = React.createClass({
+  getDefaultProps() {
+    return {
+      appTitle: "App Title",
+      userNav: null
+    };
+  },
+  render() {
+    return (
+      <nav className="navbar">
+        <div className="container">
+          <div className="navbar-header">
+            <a className="navbar-brand" href="/">{this.props.appTitle}</a>
+          </div>
+         {this.props.userNav}
+       </div>
+     </nav>
+    )
+  }
+});
+```
+- Then, add the AppHeader component to the App component (```/client/components/App.jsx```):
+
+```js
+...
+ <div className="app-container">
+    <AppHeader />
+  <main className="container">
+...
+```
+- You should now see a basic app header in your browser.
+- Notice that the AppHeader works "out of the box" because we added a default property. A well-designed component should work even if no props have been passed, or those props should be explicitly required (See below.)
+- Add the app name to the AppHeader as follows:
+
+```js
+...
+ <div className="app-container">
+  <AppHeader appTitle="Meteor React Todo App" />
+ <main className="container">
+...
+```
+- Here, we are passing in the appTitle as a component prop, which overrides the default prop.
+- Next, let's add the UserNav, which really is just a dropdown.  Therefore, let's create a Dropdown component and use an instances of it as our UserNav.
+- Add the file ```/client/components/navigation/Dropdown.jsx``` with the following code:
+
+```js
+Dropdown = React.createClass({
+  getDefaultProps() {
+    return {
+      dropDownTitle: "Select...",
+      dropDownItems: []
+    };
+  },
+  getDropdownItems(){
+    return this.props.dropDownItems.map((item, index) => {
+      return <li key={index}>
+              <a href={item.path}>{item.label}</a>
+             </li>;
+    });
+  },
+  render() {
+    return  <ul className="nav navbar-nav navbar-right">
+              <li className="dropdown">
+                <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{this.props.dropDownTitle} <span className="caret"></span></a>
+                <ul className="dropdown-menu">
+                  {this.getDropdownItems()}
+                </ul>
+              </li>
+             </ul>;
+
+  }
+});
+```
+
+- Similarly to the AppHeader, we added a default value for dropdown options, so that we can insert the component and render it.  Later, we'll talk about making component properties required, such as requiring items for a dropdown.
+- Next, go ahead and insert the Dropdown component into the AppHeader and it should appear in the browser:
+
+```js
+ ...
+   <div className="navbar-header">
+     <a className="navbar-brand" href="/">{this.props.appTitle}</a>
+     </div>
+       <Dropdown />
+     </div>
+  ...
+ ```
+
+Next, let's add user data to the UserNav and have it toggle between a signed in and anonymous state.
+
+
+*Get caught up to this step*
+- Check out the Step 4 branch: ```git checkout 04-app-header``` 
+
+ 
+- a dropdown doesn't make any sense if it does not have any options to choose from. Shortly, we will be updating this component so that options are required.  But just so we can view it,  We therefore have made this a required property. Note the use of ```  dropDownOptions: React.PropTypes.array.isRequired``` in propTypes. If no dropDownOptions are provided, you'll get an error in the console.
+- Now, let's use this component as a UserNav in our Appheader:
+- 
+
+
+
+## Step 5: Add Login View/Basic Authentication
 - Meteor comes with a very nice core package that supports everything you need for authentication.  [Here's how to add it to a React app](https://www.meteor.com/tutorials/react/adding-user-accounts).
 - However, you are likely to find that you need more control over how authentication works, and adding it manually is quite straightforward.  Here we'll therefore roll our own authentication.
 - Add the Meteor core package for handling authentication via password, as well as a very handy package we'll use for viewing data on the client side:  ```meteor add accounts-password msavin:mongol```
@@ -254,7 +359,6 @@ Register = React.createClass({
 	}
 });
 
-
 ```
 
 Here, we added the following:
@@ -266,11 +370,15 @@ Here, we added the following:
 - Now, if you go to "/login" you should see the Login component we created.
 - Try registering with an email and password (eg name@example.com and "password") and then display our db utlity using Ctrl + M, and you should see your login info.
 
-
 *Get caught up to this step*
 - Check out the Step 4 branch: ```git checkout 04-login-auth``` 
 
 
+
+### Create the Dropdown component and use it as a UserNav in the AppHeader
+
+
+### Add Pub/Sub Here
 
 ### Refactoring our component: Add PageTitle and EmailPasswordForm Component
 
@@ -278,12 +386,6 @@ Here, we added the following:
 
 ### Add logout
 - Add a package we'll use for alerting users they've been signed out:  ```meteor add juliancwirko:s-alert-stackslide```
-
-
-### Create the Dropdown component and use it as a UserNav in the AppHeader
-
-
-
 
 
 
