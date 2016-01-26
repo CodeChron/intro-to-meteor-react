@@ -103,6 +103,7 @@ App = React.createClass({
   }
 });
 ```
+- Note the use of "className" rather than "class" - this is because JSX is still, in the end, just JavaScript, and "class" is a reserved word.
 - Associate the app component with the placeholder on startup: ```touch client/startup.jsx``
 
 ```js
@@ -189,14 +190,109 @@ App = React.createClass({
 *Get caught up to this step*
 - Check out the Step 3 branch: ```git checkout 03-routing``` 
 
-## Step 4: Add Login/Authentication
-- Sidebar(?): We’ll first look at the default password UI package and then create our own very basic password-based login and registration.
+## Step 4: Add Login View/Basic Authentication
+- Meteor comes with a very nice core package that supports everything you need for authentication.  [Here's how to add it to a React app](https://www.meteor.com/tutorials/react/adding-user-accounts).
+- However, you are likely to find that you need more control over how authentication works, and adding it manually is quite straightforward.  Here we'll therefore roll our own authentication.
+- Add the Meteor core package for handling authentication via password, as well as a very handy package we'll use for viewing data on the client side:  ```meteor add accounts-password msavin:mongol```
+
+### Create the Registration Component
+- update ```client/components/views/Register.jsx``` as follows:
+
+```js
+Register = React.createClass({
+
+	getDefaultProps() {
+    let loginMsg = "Already have an account?";
+    return {
+      loginLink: <p>{loginMsg} <a href="/login">Sign In</a></p>
+    };
+  },
+
+	createUser(e) {
+	  e.preventDefault();
+	  const email = $('#email').val(),
+	        password = $('#password').val().trim()
+	  ;
+
+	  Accounts.createUser(
+	    {
+        email: email,
+        password: password
+  	  },
+      function(error) {
+        if (error) {
+        	 console.log("there was an error: " + error.reason);
+        } else { 
+        	FlowRouter.go('home');
+        };
+      }
+    );
+	},
+
+	render() {
+		return (
+			<div className="row">
+        <div className="col-md-6 col-md-offset-3">
+          <h1>Register</h1>
+          <form onSubmit={this.createUser}>
+	          <div className="form-group">
+	            <label htmlFor="email">Email:</label>
+	            <input placeholder="Email" type="email" id="email" className="form-control"/>
+	          </div>
+	          <div className="form-group">
+	            <label htmlFor="password">Password:</label>
+	            <input placeholder="Password" type="password" id="password" className="form-control"/>
+	          </div>
+	          <div className="form-group">
+	            <button type="submit" className="btn btn-primary">Sign In</button>
+	          </div>
+          </form>
+			    {this.props.loginLink}
+        </div>
+      </div>
+		)
+	}
+});
+
+
+```
+
+Here, we added the following:
+
+- Setting a default component property: a link allowing users who already have an account to sign in.  Defining it in this way allows for easier customization.
+- Adding a function for creating a user based on the values input into our form.  In this approach, we are using JQuery to get the form input values, though there are many other ways we could have done that (such as [react refs](https://facebook.github.io/react/docs/more-about-refs.html).) Note that this is a very basic registration form and does not include any form of validation (eg password matching) or security checks you would want in a production app.
+- Finally, we are rendering our form, using some basic bootstrap markup for styling purposes.
+
+- Now, if you go to "/login" you should see the Login component we created.
+- Try registering with an email and password (eg name@example.com and "password") and then display our db utlity using Ctrl + M, and you should see your login info.
+
+
+*Get caught up to this step*
+- Check out the Step 4 branch: ```git checkout 04-login-auth``` 
+
+
+
+### Refactoring our component: Add PageTitle and EmailPasswordForm Component
+
+### Create Login Component
+
+### Add logout
+- Add a package we'll use for alerting users they've been signed out:  ```meteor add juliancwirko:s-alert-stackslide```
+
+
+### Create the Dropdown component and use it as a UserNav in the AppHeader
+
+
+
+
+
+
 - Why create your own login/authentication? One reason for this is that this gives us much more flexibility in how we handle login.  For example, we may want to redirect a user to a login view if they try to access a restricted page. With the default package, that is not possible. (You’d have to display a message and tell a user to click on sign in.)  Don’t get me wrong, I think the default package is great for quick prototyping, but if you are a building a production app, you will want to create your own custom login. Another reason: the current major custom login package, useraccounts, is still Blaze-based and you have to jump through several hoops to make it work in React.  It is definitely possible, but I’d recommend rolling your own.
 - Add app header component with login info
 - Add dropdown component 
 - Rediret anonymous users accessing the homepage.
 
-##  5: Add data to React components
+##  5: Add Data
 - Let’s create a Tasks collection and then display the data in that collection in the app.
 - Add the Mongo Collection
 - Add the React Mixin to our TasksList controller component
