@@ -97,7 +97,7 @@ App = React.createClass({
   render() {
     return (
       <div className="app-container">
-      (App Content)
+        (App Content)
      </div>
     );
   }
@@ -113,14 +113,80 @@ Meteor.startup(function () {
 
 - You should now see the text '(App Content)' in your browser.
 
+*Get caught up to this step*
+- Check out the Step 2 branch: ```git checkout 02-react-setup``` 
 
-## Step 3:Routing and Main App Views
-- Remove the default files: ```rm app*```
-- Install the packages we'll need for this step: 
-- Add Bootstrap for basic look and feel
+## Step 3: Routing and Main App Views
+- Next we're going to add (client-side) routing and create placeholders for the main views (or pages) of the application.  We'll be using [FlowRouter](https://github.com/kadirahq/flow-router#meteor-routing-guide) for our routing, but you may also wish to consider using [react router](https://github.com/thereactivestack/meteor-react-router/). 
+- Add packages for routing, layout, and Bootstrap for basic look and feel: ```meteor add kadira:flow-router kadira:react-layout twbs:bootstrap```
+- Add our "view" components: ```mkdir client/components/views```, ```cd client/components/views```, ```touch Login.jsx Register.jsx Taskslist.jsx```
+- Add placeholders to each view: 
+```js
+[Login/Register/TasksList] = React.createClass({
+  render() {
+    return <div>[Login/Register/TasksList] view</div>;
+  }
+});
+```
+- Cd back to the client dir and add a routing file and routes for each view: ```touch routes.jsx```
 
-## Step 3: Add Routing and Main App Views 
-- Add Bootstrap for basic look and feel
+```js
+FlowRouter.route('/', {
+  name: 'home',
+  action: function() {
+    ReactLayout.render(App, {
+      content: <TasksList />
+    });
+  }
+});
+
+FlowRouter.route('/login', {
+  name: 'login',
+  action: function() {
+    ReactLayout.render(App, {
+      content: <Login />
+    });
+  }
+});
+
+FlowRouter.route('/register', {
+  name: 'register',
+  action: function() {
+    ReactLayout.render(App, {
+      content: <Register />
+    });
+  }
+});
+
+FlowRouter.notFound = {
+  action: function() {
+   FlowRouter.go('home');
+  }
+};
+
+```
+- Add a AppHeader placeholder and a reference to where content props should be displayed in the app component:
+
+```
+App = React.createClass({
+  render() {
+    return (
+      <div className="app-container">
+        (App Header)
+       <main className="container">
+         {this.props.content}
+       </main>
+     </div>
+    );
+  }
+});
+```
+- Remove the files we used for the original React setup (they are no longer needed with React-Layout added): ```rm client/index.html rm client/startup.jsx```
+
+- You should now see "TasksList view" in the browser.  If you go to "/login" and "/register" you should also see the corresponding view names.  If you go to any other route, eg "/bananas" you will be redirected back to the homepage. (Normally, you might display a "404 - Not Found" page here, but this is a simple way to handle undefined routes.)
+
+*Get caught up to this step*
+- Check out the Step 3 branch: ```git checkout 03-routing``` 
 
 ## Step 4: Add Login/Authentication
 - Sidebar(?): We’ll first look at the default password UI package and then create our own very basic password-based login and registration.
