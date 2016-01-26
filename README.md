@@ -121,6 +121,7 @@ Meteor.startup(function () {
 - Add packages for routing, layout, and Bootstrap for basic look and feel: ```meteor add kadira:flow-router kadira:react-layout twbs:bootstrap```
 - Add our "view" components: ```mkdir client/components/views```, ```cd client/components/views```, ```touch Login.jsx Register.jsx Taskslist.jsx```
 - Add placeholders to each view: 
+
 ```js
 [Login/Register/TasksList] = React.createClass({
   render() {
@@ -167,7 +168,7 @@ FlowRouter.notFound = {
 ```
 - Add a AppHeader placeholder and a reference to where content props should be displayed in the app component:
 
-```
+```js 
 App = React.createClass({
   render() {
     return (
