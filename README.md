@@ -37,9 +37,15 @@ When installing a Meteor app, by default it uses [Blaze](https://github.com/mete
 
 
 ## Step 2: The React Component Hierarchy
-Before actually starting to build the app we need to think a little about our requirements. The react model strongly encourages taking a visual approach to defining your app. React is based around component relationships and hierarchies.  It is therefore very helpful to visualize this. (See [Thinking in React - “Start with a mock”](https://facebook.github.io/react/docs/thinking-in-react.html))
+React is based on component relationships and hierarchies, and the model strongly encourages taking a visual approach to defining your app.  (See [Thinking in React - “Start with a mock”](https://facebook.github.io/react/docs/thinking-in-react.html).) Therefore, let's start with some mockups of the app views we'll be creating:
 
-_Todo visualize the component hierarchy_
+![app-views](https://cloud.githubusercontent.com/assets/819213/12585736/57349d88-c41b-11e5-8032-692898d72335.png)
+
+Our next step is to sketch out our component hierarchy based on this UI:
+
+![component_hierarchy-04](https://cloud.githubusercontent.com/assets/819213/12585857/da58c36a-c41b-11e5-94ab-f906c4e6be2b.png)
+
+Let's look at some of the major components we've defined here.
 
 
 ## Step 3: Add Routing and Main App Views 
