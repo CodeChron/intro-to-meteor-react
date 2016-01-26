@@ -32,6 +32,9 @@ Why did we go to the trouble of creating a directory and then creating the meteo
 1. Clone this repo: ```git clone https://github.com/CodeChron/intro-to-meteor-react.git```
 2. Cd into the repo: ```cd intro-to-meteor-react```
 
+##Sidebar: Comparing Blaze and React
+When installing a Meteor app, by default it uses [Blaze](https://github.com/meteor/blaze) for handling the view layer.  If you're interested in understanding how Blaze and React differ, [check out this sidebar](https://github.com/CodeChron/react-v-blaze), in which I've re-created the default Meteor app functionality using React, and then discuss some key differences.
+
 
 ## Step 2: The React Component Hierarchy
 Before actually starting to build the app we need to think a little about our requirements. The react model strongly encourages taking a visual approach to defining your app. React is based around component relationships and hierarchies.  It is therefore very helpful to visualize this. (See [Thinking in React - “Start with a mock”](https://facebook.github.io/react/docs/thinking-in-react.html))
