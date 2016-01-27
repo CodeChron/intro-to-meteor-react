@@ -239,53 +239,32 @@ AppHeader = React.createClass({
 ```
 - Here, we are passing in the appTitle as a component prop, which overrides the default prop.
 
-- *Add a UserNav to the AppHeader:*  Our UserNav will have one state for when a user is signed and another for when they are anonymous.  If we recall from our component overview, our App component is our "controller" component for user data and we therefore want to manage this state there, while keeping the AppHeader component a "dumb" recipient of whatever props are passed to it.  Let's therefore add a signedIn state to our App component and give it a default value of false.
+- *Add a UserNav to the AppHeader:*  If we recall from our component overview, our App component is our "controller" component for user data and we therefore want to manage our UserNave there, while keeping the AppHeader component a "dumb" recipient of whatever props are passed to it.
+- Add a function for showing the UserNav to the App component.  For now, it will just display links for registering and signing in. Also, add a "userNav" property to the AppHeader where we make the return value of this function available to the AppHeader component.
 
 ```js
 App = React.createClass({
-  getDefaultProps() {
-    return {
-      signedIn: false
-    };
+  showUserNav(){
+    return  <ul className="nav navbar-nav navbar-right">
+              <li><a href="/login">Login</a></li>
+              <li><a href="/register">Register</a></li>
+            </ul>;
   },
-  getInitialState() {
-    return {
-      signedIn: this.props.signedIn
-    };
-  },
-  ...
-
-```
-- Next, also in the App component, let's insert a function we'll use to manage display of user data, where we use the signedIn state we just added.:
-
-```js
-App = React.createClass({
-    ...
-    showUserNav(){
-  
-    let userNavLinks = [
-      {
-        label: "Sign Out",
-        path: "/logout"
-      }
-    ];
-    
-    return this.state.signedIn?
-      //Placeholder for a Dropdown with User Info
-      <span>User Info</span>
-    :
-      <ul className="nav navbar-nav navbar-right">
-        <li><a href="/login">Login</a></li>
-        <li><a href="/register">Register</a></li>
-      </ul>
-    ;
-  },
- ...
+  render() {
+    return (
+      <div className="app-container">
+        <AppHeader appTitle="Meteor React Todo App" userNav={this.showUserNav()} />
+       <main className="container">
+         {this.props.content}
+       </main>
+     </div>
+    );
+  }
 });
 
 ```
 
-- Here, we've added a ```showUserNav()``` function for managing what to display depending on if a user is signed in or not.  We've also made the return value of this function available to the AppHeader component via a userNav prop.  Next, let's render that return value of the ```showUserNav()``` function in  the AppHeader component by inserting ``` {this.props.userNav} ```:
+- Now in the AppHeader component, let's render "userNav":
 
 ```js
  ...
@@ -413,7 +392,7 @@ Let's now also add our Login view, which is quite straightforward at this point.
 
 ```js
 Register = React.createClass({
-	getDefaultProps() {
+  getDefaultProps() {
     let registerMsg = "Don't have an account?";
     return {
       registerLink: <p>{registerMsg} <a href="/register">Register</a></p>
@@ -432,10 +411,8 @@ Register = React.createClass({
         FlowRouter.go('/');
       }
     });
-  },
-
-
-	render() {
+  }, 
+  render() {
 		return (
 			<div className="row">
         <div className="col-md-6 col-md-offset-3">
@@ -454,13 +431,33 @@ Register = React.createClass({
 - Here, instead of creating an account, we are using the [Meteor.loginWithPassword](http://docs.meteor.com/#/full/meteor_loginwithpassword) function.
 
 *Get caught up to this step*
-- Check out the Step 4 branch: ```git checkout 04-login-auth``` 
+- Check out the Step 5 branch: ```git checkout 05-user-auth``` 
 
-## Step 5: Getting (User) Data with Publications and Subcriptions
-- As we can see, our App is not displaying our user data in the app header. Let's fix that here.
+## Step 6: Getting (User) Data with Publications and Subcriptions
+- As we can see, our app still just displays the login and signup links even if we are signed in.  Let's instead a dropdown with user info and the ability to sign out, for users who are signed in.
+- In order to do this, we need to get data about the current user from the server.  By default, Meteor has a package called [autopublish](https://atmospherejs.com/meteor/autopublish) that automatically publishes all data from the server.  Here, we'll remove that package and instead set up actual Publications and Subscriptions so we can understand this core concept.
+- *Remove autopublish:* Let's begin by removing the autopublish package: ```meteor remove autopublish```
+- *Publish data from the server:* Only data which we choose to publish from the server will be accessible by the client.
+- *Add server side code:* This can be achieved by simply creating a 'server' directory: ```mkdir server``` Code inside this directory will only be run on the server.
+- *Add a user data publication:*  Create the file ```server/publications.js``` and add the following code:
 
+```js
+ Meteor.publish("userData", function () {
+  if (this.userId) {
+    return Meteor.users.find({_id: this.userId});
+  } else {
+    this.ready();
+  }
+});
+``` 
 
-- Note the use of ```  dropDownOptions: React.PropTypes.array.isRequired``` in propTypes. If no dropDownOptions are provided, you'll get an error in the console.
+- This code will make available user data for the current user via the subscription handle "userData".
+- *Get Meteor data in a React component via a subscription:*  We now need to subcribe to this data on the client. Since we are using React, we will achieve this using the [ReactMeteorData](https://atmospherejs.com/meteor/react-meteor-data) Mixin.
+- As mentioned earlier, the App component will be repsonsible for getting user data, so let's update that component with the necessary code for handling that:
+- INSERT CODE INTO APP.JSX JUST FOR GETTING DATA AND HANDLING SUBS READY
+- [What we did here, including waiting for subs ready]
+
+- [Add Dropdown]
 
 - *Create a Dropdown component* that we can then user for our UserNav.
 - Add the file ```/client/components/navigation/Dropdown.jsx``` with the following code:
@@ -493,32 +490,17 @@ Dropdown = React.createClass({
   }
 });
 ```
-- In this step, we'll add support for user authentication, including having our UserNav toggle between a signed in and anonymous state.  In order to do this, we need to get data about the current user from the server.  By default, Meteor has a package called [autopublish](https://atmospherejs.com/meteor/autopublish) that automatically publishes all data from the server.  Here, we'll remove that package and instead set up actual Publications and Subscriptions so we can understand this core concept.
-- *Remove autopublish: * Let's begin by removing the autopublish package and then adding a very useful package for viewing data on the client side: ```meteor remove autupublish```, ```meteor add msavin:mongol``.
-- *Publish data from the server:* Only data which we choose to publish from the server will be accessible by the client.
-- *Add server side code:* This can be achieved by simply creating a 'server' directory: ```mkdir server``` Code inside this directory will only be run on the server.
-- *Add a user data publication:*  Create the file ```server/publications.js``` and add the following code:
 
-```js
- Meteor.publish("userData", function () {
-  if (this.userId) {
-    return Meteor.users.find({_id: this.userId});
-  } else {
-    this.ready();
-  }
-});
-``` 
+- Note the use of ```  dropDownOptions: React.PropTypes.array.isRequired``` in propTypes. If no dropDownOptions are provided, you'll get an error in the console.
 
-- This code will make available all user data for the current user via the subscription handle "userData" (Normally, we'd be more restrictive in what we publish, ie a set of specific fields.)
-- *Get Meteor data in a React component via a subscription:* We now need to subcribe to this data on the client. Since we are using React, we will achieve this using the [GetMeteorData] component Mixin.
-- As mentioned earlier, the App component will be repsonsible for getting user data, so let's update that component with the necessary code for handling that:
+- [UPDATE SHOW USERNAV] Now, let's upate showUserNav so that it toggles based on if there is a currentUser or not.
 
 ```js
 App = React.createClass({
+...
   mixins: [ReactMeteorData],
   getMeteorData() {
-  
-    let userDataSubscription = Meteor.subscribe("userData"), 
+    let userDataSubscription = Meteor.subscribe("userData"),
         currentUser = Meteor.user()
     ;
 	
@@ -566,6 +548,7 @@ App = React.createClass({
 
 ```
 
+- Here, we've updated the showUSernav function. If you look in your browser, you will now see a dropdown if you are signed in.  Note that we did not touch AppHeader to make these upates.  It simply accepts props.
 
 
 ### Refactoring our component: Add PageTitle and EmailPasswordForm Component
