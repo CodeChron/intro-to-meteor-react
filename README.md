@@ -117,7 +117,7 @@ Meteor.startup(function () {
 - Check out the Step 2 branch: ```git checkout 02-react-setup``` 
 
 ## Step 3: Routing and Main App Views
-- Next we're going to add (client-side) routing and create placeholders for the main views (or pages) of the application.  We'll be using [FlowRouter](https://github.com/kadirahq/flow-router#meteor-routing-guide) for our routing, but you may also wish to consider using [react router](https://github.com/thereactivestack/meteor-react-router/). 
+- Next we're going to add routing and create placeholders for the main views (or pages) of the application.  We'll be using [FlowRouter](https://github.com/kadirahq/flow-router#meteor-routing-guide) for our routing, but you may also wish to consider using [react router](https://github.com/thereactivestack/meteor-react-router/). 
 - Add packages for routing, layout, and Bootstrap for basic look and feel: ```meteor add kadira:flow-router kadira:react-layout twbs:bootstrap```
 - Add our "view" components: ```mkdir client/components/views```, ```cd client/components/views```, ```touch Login.jsx Register.jsx Taskslist.jsx```
 - Add placeholders to each view: 
@@ -191,8 +191,10 @@ App = React.createClass({
 
 
 ## Step 4: Add AppHeader and UserNav Dropdown (no data)
-- Let's add an AppHeader with a UserNav, so users can view their login info, and/or sign/register.
-- Add the file ```/client/components/layout/AppHeader.jsx``` with this code:
+
+Let's add an AppHeader with a UserNav, so users can view their login info, and/or sign/register.
+1. *Add the AppHeader component:*
+```/client/components/layout/AppHeader.jsx```:
 
 ```js
 AppHeader = React.createClass({
@@ -216,7 +218,7 @@ AppHeader = React.createClass({
   }
 });
 ```
-- Then, add the AppHeader component to the App component (```/client/components/App.jsx```):
+- Then, insert the AppHeader component into the App component (```/client/components/App.jsx```):
 
 ```js
 ...
@@ -226,8 +228,8 @@ AppHeader = React.createClass({
 ...
 ```
 - You should now see a basic app header in your browser.
-- Notice that the AppHeader works "out of the box" because we added a default property. A well-designed component should work even if no props have been passed, or those props should be explicitly required (See below.)
-- Add the app name to the AppHeader as follows:
+- Notice that the AppHeader works "out of the box" because we added a default property. _A well-designed component should work even if no props have been passed, OR necessary props should be explicitly required (See below.)_
+- *Set the name of the app as a prop of AppHeader:*
 
 ```js
 ...
@@ -269,8 +271,7 @@ Dropdown = React.createClass({
 });
 ```
 
-- Similarly to the AppHeader, we added a default value for dropdown options, so that we can insert the component and render it.  Later, we'll talk about making component properties required, such as requiring items for a dropdown.
-- Next, go ahead and insert the Dropdown component into the AppHeader and it should appear in the browser:
+- Similarly to the AppHeader, we added a default value for dropdown options, so that we can insert the component and render it. Insert the Dropdown component into the AppHeader and it should appear in the browser:
 
 ```js
  ...
@@ -282,23 +283,41 @@ Dropdown = React.createClass({
   ...
  ```
 
-Next, let's add user data to the UserNav and have it toggle between a signed in and anonymous state.
-
+- However, a dropdown isn't very useful if it doesn't have any options to choose from. In the next section, we'll be updating this component so that options are required.
 
 *Get caught up to this step*
 - Check out the Step 4 branch: ```git checkout 04-app-header``` 
 
- 
-- a dropdown doesn't make any sense if it does not have any options to choose from. Shortly, we will be updating this component so that options are required.  But just so we can view it,  We therefore have made this a required property. Note the use of ```  dropDownOptions: React.PropTypes.array.isRequired``` in propTypes. If no dropDownOptions are provided, you'll get an error in the console.
-- Now, let's use this component as a UserNav in our Appheader:
-- 
+## Step 5: Getting (User) Data with Publications and Subcriptions
+- In this step, we'll add support for user authentication, including having our UserNav toggle between a signed in and anonymous state.  In order to do this, we need to get data about the current user from the server.  By default, Meteor has a package called [autopublish](https://atmospherejs.com/meteor/autopublish) that automatically publishes all data from the server.  Here, we'll remove that package and instead set up actual Publications and Subscriptions so we can understand this core concept.
+- *Remove autopublish: * Let's begin by removing the autopublish package and then adding a very useful package for viewing data on the client side: ```meteor remove autupublish```, ```meteor add msavin:mongol``.
+- *Publish data from the server:* Only data which we choose to publish from the server will be accessible by the client.
+- *Add server side code:* This can be achieved by simply creating a 'server' directory: ```mkdir server``` Code inside this directory will only be run on the server.
+- *Add a user data publication:*  Create the file ```server/publications.js``` and add the following code:
+
+```js
+ Meteor.publish("userData", function () {
+  if (this.userId) {
+    return Meteor.users.find({_id: this.userId});
+
+  } else {
+    this.ready();
+  }
+});
+``` 
+
+- This code will make available all user data for the current user via the subscription handle "userData" (Normally, we would be much more restrictive in what we publish, ie a set of specific fields.)
+- *Get Meteor data in a React component via a subscription:*
 
 
 
-## Step 5: Add Login View/Basic Authentication
-- Meteor comes with a very nice core package that supports everything you need for authentication.  [Here's how to add it to a React app](https://www.meteor.com/tutorials/react/adding-user-accounts).
-- However, you are likely to find that you need more control over how authentication works, and adding it manually is quite straightforward.  Here we'll therefore roll our own authentication.
-- Add the Meteor core package for handling authentication via password, as well as a very handy package we'll use for viewing data on the client side:  ```meteor add accounts-password msavin:mongol```
+- Meteor comes with a nice core package that supports everything you need for authentication.  [Here's how to add it to a React app](https://www.meteor.com/tutorials/react/adding-user-accounts).
+- However, you are likely to find that you need more control over authentication in your app, and adding it manually is quite straightforward.  Here we'll therefore roll our own authentication.
+- Add the Meteor core package for handling authentication via password, as well as a handy package we'll use`
+
+
+
+- Note the use of ```  dropDownOptions: React.PropTypes.array.isRequired``` in propTypes. If no dropDownOptions are provided, you'll get an error in the console.
 
 ### Create the Registration Component
 - update ```client/components/views/Register.jsx``` as follows:
@@ -372,13 +391,6 @@ Here, we added the following:
 
 *Get caught up to this step*
 - Check out the Step 4 branch: ```git checkout 04-login-auth``` 
-
-
-
-### Create the Dropdown component and use it as a UserNav in the AppHeader
-
-
-### Add Pub/Sub Here
 
 ### Refactoring our component: Add PageTitle and EmailPasswordForm Component
 
