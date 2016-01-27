@@ -10,6 +10,8 @@ App = React.createClass({
    if (subReady) {
     currentUser = Meteor.user();
    };
+
+
   
    return {
       subReady: subReady,
@@ -24,10 +26,11 @@ App = React.createClass({
         path: "/logout"
       }
     ];
+    let currentUserEmail = this.data.currentUser.emails[0].address;
 
     return this.data.signedIn?
       <Dropdown
-        dropDownTitle={this.data.currentUser.profile.email}
+        dropDownTitle={currentUserEmail}
         dropDownOptions={userNavOptions}
       />
     :
@@ -38,6 +41,9 @@ App = React.createClass({
     ;
   },
   render() {
+    if (this.data.subReady) {
+      console.log(this.data.currentUser.emails.address);
+    };
 
     return this.data.subReady?
       <div className="app-container">
