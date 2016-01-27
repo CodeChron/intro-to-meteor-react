@@ -12,7 +12,7 @@ AppHeader = React.createClass({
           <div className="navbar-header">
             <a className="navbar-brand" href="/">{this.props.appTitle}</a>
           </div>
-         <Dropdown />
+          {this.props.userNav}
        </div>
      </nav>
     )
