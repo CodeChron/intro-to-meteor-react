@@ -9,6 +9,18 @@ App = React.createClass({
       signedIn: this.props.signedIn
     };
   },
+  mixins: [ReactMeteorData],
+  getMeteorData() {
+    let userDataSubscription = Meteor.subscribe("userData"),
+        currentUser = Meteor.user()
+    ;
+  
+   return {
+      currentUser: currentUser,
+      signedIn: Meteor.user() != null
+   }
+
+  },
   showUserNav(){
     
     let userNavLinks = [
