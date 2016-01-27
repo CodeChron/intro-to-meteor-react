@@ -302,8 +302,165 @@ App = React.createClass({
 *Get caught up to this step*
 - Check out the Step 4 branch: ```git checkout 04-app-header``` 
 
-## Step 5: Getting (User) Data with Publications and Subcriptions
+## Step 5: User Authentication
 
+- Meteor comes with a nice package that gives you everything you need for basic Login/Registration.  [Here's how to add it to a React app](https://www.meteor.com/tutorials/react/adding-user-accounts).
+- However, you are likely to find that you need more control over authentication in your app, and adding it manually is quite straightforward.  Here we'll therefore roll our own authentication.
+- Add the Meteor core package for handling authentication via password, as well as a handy package we'll use for viewing/editing data on the client: ```meteor add accounts-password msavin:mongol```
+- *Add an Email/Password form:* In our Logina and Registration forms, we will in both cases be using a form with email and password.  With components, we can help keep our code DRY and use the same component for both forms.
+- Create the file  ```client/components/forms/EmailPasswordForm.jsx``` and add this code:
+
+```js
+EmailPasswordForm = React.createClass({
+  propTypes: {
+    submitAction: React.PropTypes.func.isRequired
+  },
+  getDefaultProps() {
+    return {
+      submitBtnLabel: "Submit"
+    };
+  },
+  render() {
+    return (
+      <form onSubmit={this.props.submitAction}>
+        <div className="form-group">
+          <label htmlFor="email">Email:</label>
+          <input placeholder="Email" type="email" id="email" className="form-control"/>
+        </div>
+        <div className="form-group">
+          <label htmlFor="password">Password:</label>
+          <input placeholder="Password" type="password" id="password" className="form-control"/>
+        </div>
+        <div className="form-group">
+          <button type="submit" className="btn btn-primary">{this.props.submitBtnLabel}</button>
+        </div>
+      </form>
+    )
+  },
+}); 
+```
+
+- When using this component, one must provide a handler for the form submit. We therefore defined the "submitAction" prop as required:
+
+```js
+  propTypes: {
+    submitAction: React.PropTypes.func.isRequired
+  },
+```
+
+We can now use this component in both the Login and Registration forms:
+- *Create the Registration View:* update ```client/components/views/Register.jsx``` as follows:
+
+```js
+Register = React.createClass({
+  getDefaultProps() {
+    let loginMsg = "Already have an account?";
+    return {
+      loginLink: <p>{loginMsg} <a href="/login">Sign In</a></p>
+    };
+  },
+  createUser(e) {
+    e.preventDefault();
+    const
+      email = $('#email').val(),
+      password = $('#password').val().trim()
+    ;
+
+    Accounts.createUser(
+      {
+        email: email,
+        password: password
+      },
+      function(error) {
+        if (error) {
+          console.log("there was an error: " + error.reason);
+        } else { 
+          FlowRouter.go('home');
+        };
+      }
+    );
+  },
+  render() {
+    return (
+      <div className="row">
+        <div className="col-md-6 col-md-offset-3">
+          <h1>Register</h1>
+            <EmailPasswordForm
+              submitBtnLabel="Register"
+              submitAction={this.createUser}
+            />
+	 {this.props.loginLink}
+        </div>
+      </div>
+    )
+  }
+});
+
+```
+
+Here, we added the following:
+
+- Setting a default component property: a link allowing users who already have an account to sign in.  Defining it in this way allows for easier customization.
+- Adding a function for creating a user based on the values input into our form.  In this approach, we are using JQuery to get the form input values, though there are many other ways we could have done that (such as [react refs](https://facebook.github.io/react/docs/more-about-refs.html).) Note that this is a very basic registration form and does not include any form of validation (eg password matching) or security checks you would want in a production app.
+- Finally, we are rendering our form, using some basic Bootstrap markup for styling.
+- Now, if you go to "/register" you should see the Register "view" component we created.
+- Try registering with an email and password (eg name@example.com and "password")
+- Meteor will, by default, automatically sign you in when registering. Display our db utlity using Ctrl + M, and you should see your login info.
+
+<img width="522" alt="screen shot 2016-01-27 at 11 21 49 am" src="https://cloud.githubusercontent.com/assets/819213/12619941/40250ae2-c4e8-11e5-8a1e-3ff6caa0d74c.png">
+
+Let's now also add our Login view, which is quite straightforward at this point. Update ```client/components/views/Login.jsx``` as follows:
+
+```js
+Register = React.createClass({
+	getDefaultProps() {
+    let registerMsg = "Don't have an account?";
+    return {
+      registerLink: <p>{registerMsg} <a href="/register">Register</a></p>
+    };
+  },
+  loginWithPassword(e) {
+    e.preventDefault();
+    const email = $('#email').val(),
+          password = $('#password').val().trim()
+    ;
+
+    Meteor.loginWithPassword(email, password, function(error) {
+      if (error) {
+        console.log("There was an error:" + error.reason);
+      } else {
+        FlowRouter.go('/');
+      }
+    });
+  },
+
+
+	render() {
+		return (
+			<div className="row">
+        <div className="col-md-6 col-md-offset-3">
+          <h1>Register</h1>
+            <EmailPasswordForm
+              submitBtnLabel="Register"
+              submitAction={this.createUser}
+            />
+			      {this.props.loginLink}
+        </div>
+      </div>
+		)
+	}
+});
+```
+- Here, instead of creating an account, we are using the [Meteor.loginWithPassword](http://docs.meteor.com/#/full/meteor_loginwithpassword) function.
+
+*Get caught up to this step*
+- Check out the Step 4 branch: ```git checkout 04-login-auth``` 
+
+## Step 5: Getting (User) Data with Publications and Subcriptions
+- As we can see, our App is not displaying our user data in the app header. Let's fix that here.
+
+
+- Note the use of ```  dropDownOptions: React.PropTypes.array.isRequired``` in propTypes. If no dropDownOptions are provided, you'll get an error in the console.
 
 - *Create a Dropdown component* that we can then user for our UserNav.
 - Add the file ```/client/components/navigation/Dropdown.jsx``` with the following code:
@@ -410,87 +567,6 @@ App = React.createClass({
 ```
 
 
-
-- Meteor comes with a nice core package that supports everything you need for authentication.  [Here's how to add it to a React app](https://www.meteor.com/tutorials/react/adding-user-accounts).
-- However, you are likely to find that you need more control over authentication in your app, and adding it manually is quite straightforward.  Here we'll therefore roll our own authentication.
-- Add the Meteor core package for handling authentication via password, as well as a handy package we'll use`
-
-
-
-- Note the use of ```  dropDownOptions: React.PropTypes.array.isRequired``` in propTypes. If no dropDownOptions are provided, you'll get an error in the console.
-
-### Create the Registration Component
-- update ```client/components/views/Register.jsx``` as follows:
-
-```js
-Register = React.createClass({
-
-	getDefaultProps() {
-    let loginMsg = "Already have an account?";
-    return {
-      loginLink: <p>{loginMsg} <a href="/login">Sign In</a></p>
-    };
-  },
-
-	createUser(e) {
-	  e.preventDefault();
-	  const email = $('#email').val(),
-	        password = $('#password').val().trim()
-	  ;
-
-	  Accounts.createUser(
-	    {
-        email: email,
-        password: password
-  	  },
-      function(error) {
-        if (error) {
-        	 console.log("there was an error: " + error.reason);
-        } else { 
-        	FlowRouter.go('home');
-        };
-      }
-    );
-	},
-
-	render() {
-		return (
-			<div className="row">
-        <div className="col-md-6 col-md-offset-3">
-          <h1>Register</h1>
-          <form onSubmit={this.createUser}>
-	          <div className="form-group">
-	            <label htmlFor="email">Email:</label>
-	            <input placeholder="Email" type="email" id="email" className="form-control"/>
-	          </div>
-	          <div className="form-group">
-	            <label htmlFor="password">Password:</label>
-	            <input placeholder="Password" type="password" id="password" className="form-control"/>
-	          </div>
-	          <div className="form-group">
-	            <button type="submit" className="btn btn-primary">Sign In</button>
-	          </div>
-          </form>
-			    {this.props.loginLink}
-        </div>
-      </div>
-		)
-	}
-});
-
-```
-
-Here, we added the following:
-
-- Setting a default component property: a link allowing users who already have an account to sign in.  Defining it in this way allows for easier customization.
-- Adding a function for creating a user based on the values input into our form.  In this approach, we are using JQuery to get the form input values, though there are many other ways we could have done that (such as [react refs](https://facebook.github.io/react/docs/more-about-refs.html).) Note that this is a very basic registration form and does not include any form of validation (eg password matching) or security checks you would want in a production app.
-- Finally, we are rendering our form, using some basic bootstrap markup for styling purposes.
-
-- Now, if you go to "/login" you should see the Login component we created.
-- Try registering with an email and password (eg name@example.com and "password") and then display our db utlity using Ctrl + M, and you should see your login info.
-
-*Get caught up to this step*
-- Check out the Step 4 branch: ```git checkout 04-login-auth``` 
 
 ### Refactoring our component: Add PageTitle and EmailPasswordForm Component
 
