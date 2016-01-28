@@ -12,17 +12,9 @@ TasksList = React.createClass({
     }
   },
   handleInsertTask(inputValue) {
-  	let taskAttributes = {
-      title: inputValue,
-      createdAt: new Date(),
-      done: false,
-      ownerId: Meteor.userId()
-    };
-    Tasks.insert(taskAttributes);
-
-	   // Meteor.call('/task/insert', inputValue, function(err, result){
-	   // 	 if (err) { console.log('there was an error: ' + err.reason); };
-    // });
+	   Meteor.call('/task/insert', inputValue, function(err, result){
+	   	 if (err) { console.log('there was an error: ' + err.reason); };
+    });
   },
   render() {
     return (
