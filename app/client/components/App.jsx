@@ -10,9 +10,7 @@ App = React.createClass({
    if (subReady) {
     currentUser = Meteor.user();
    };
-
-
-  
+   
    return {
       subReady: subReady,
       currentUser: currentUser,
@@ -40,9 +38,6 @@ App = React.createClass({
     ;
   },
   render() {
-    // if (this.data.subReady) {
-    //   console.log(this.data.currentUser.emails.address);
-    // };
 
     return this.data.subReady?
       <div className="app-container">
@@ -52,9 +47,7 @@ App = React.createClass({
        </main>
      </div>
     :
-      <div className="app-container">
-        Loading...
-      </div>
+      <Loading />
     ;
 
   }

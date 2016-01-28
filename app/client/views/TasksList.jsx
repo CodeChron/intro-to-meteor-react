@@ -25,9 +25,7 @@ TasksList = React.createClass({
           newItemPlaceholder="New Task..."
         />
       :
-       <div className="loading">
-         Loading...
-        </div>
+       <Loading />
       ;
 
   },
@@ -36,7 +34,7 @@ TasksList = React.createClass({
     return (
         <div className="row">
           <div className="col-md-6 col-md-offset-3">
-           <h1>My Tasks</h1>
+            <PageTitle title="My Tasks" />
              {this.showTasks()}
           </div>
         </div>

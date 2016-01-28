@@ -27,7 +27,7 @@ Login = React.createClass({
 		return (
 			<div className="row">
         <div className="col-md-6 col-md-offset-3">
-          <h1>Login</h1>
+        <PageTitle title="Login" />
             <EmailPasswordForm
               submitBtnLabel="Sign In"
               submitAction={this.loginWithPassword}
