@@ -5,3 +5,7 @@
     this.ready();
   }
 });
+
+Meteor.publish("myTasks", function () {
+    return Tasks.find({ ownerId: this.userId });
+});
