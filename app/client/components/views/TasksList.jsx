@@ -16,21 +16,30 @@ TasksList = React.createClass({
 	   	 if (err) { console.log('there was an error: ' + err.reason); };
     });
   },
+  showTasks(){
+  	return this.data.subsReady?
+      <List
+          collection={this.data.tasks} 
+          handleAddItem={this.handleInsertTask}
+          canAdd={true}
+          newItemPlaceholder="New Task..."
+        />
+      :
+       <div className="loading">
+         Loading...
+        </div>
+      ;
+
+  },
   render() {
+
     return (
         <div className="row">
           <div className="col-md-6 col-md-offset-3">
            <h1>My Tasks</h1>
-    <ul className="list-group">
-        <li className="list-group-item editable">
-            <SingleFieldSubmit
-              placeholder="New task..."
-              handleInput={this.handleInsertTask}
-             />
-        </li>
-    </ul>
+             {this.showTasks()}
           </div>
         </div>
       );
-  }
+    }
 });
