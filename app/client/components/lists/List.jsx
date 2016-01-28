@@ -23,7 +23,6 @@ List = React.createClass({
         <SingleFieldSubmit
           placeholder={this.props.newItemPlaceholder}
           handleInput={this.props.handleAddItem}
-          {...this.props}
         />
       </li>  
      : null;

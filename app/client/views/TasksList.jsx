@@ -18,7 +18,7 @@ TasksList = React.createClass({
   },
   showTasks(){
   	return this.data.subsReady?
-      <List
+       <List
           collection={this.data.tasks} 
           handleAddItem={this.handleInsertTask}
           canAdd={true}
