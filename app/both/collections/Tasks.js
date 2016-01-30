@@ -7,7 +7,6 @@ Meteor.methods({
     let taskAttributes = {
       title: title,
       createdAt: new Date(),
-      done: false,
       ownerId: Meteor.userId()
     };
     Tasks.insert(taskAttributes);
