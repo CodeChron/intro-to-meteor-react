@@ -12,13 +12,8 @@ ListItem = React.createClass({
       </form>;
   },
   displayListItem(){
-    return this.props.isCheckList? <form className="form-inline">
-         <div className="checkbox">
-           <label>
-             <input type="checkbox" checked={this.props.item.done} onChange={this.handleCheckbox} /> {this.displayTitle()}
-          </label>
-        </div>
-      </form>
+    return this.props.isCheckList? 
+      this.displayWithCheckBox()
       :
         this.displayTitle();
       ;
