@@ -1,5 +1,16 @@
+function redirectIfNotSignedIn(context, redirect) {
+  AppLibRedirectPath = context.path; 
+  var notSignedIn = !Meteor.userId() && !Meteor.loggingIn();
+  if (notSignedIn) {
+    FlowRouter.go('login');
+    sAlert.info("Please sign in to continue.", {effect: 'stackslide', position: 'top-left', timeout: 2500,});
+  };
+};
+
+
 FlowRouter.route('/', {
   name: 'home',
+  triggersEnter: [redirectIfNotSignedIn],
   action: function() {
     ReactLayout.render(App, {
       content: <TasksList />
