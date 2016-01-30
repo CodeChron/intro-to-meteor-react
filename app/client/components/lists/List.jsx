@@ -1,7 +1,9 @@
 List = React.createClass({
   propTypes: {
     collection:       React.PropTypes.array.isRequired,
-    canAddItem:         React.PropTypes.bool,
+    canAddItem:       React.PropTypes.bool,
+    canDeleteItem:    React.PropTypes.bool,
+    handleDeleteItem:  React.PropTypes.func,
     newItemPlaceholder: React.PropTypes.string,
     handleAddItem:      React.PropTypes.func,
     isCheckList:   React.PropTypes.bool,
@@ -19,9 +21,6 @@ List = React.createClass({
               item={item}
               {...this.props}
              />;
-      // return <li key={item._id} className="list-group-item">
-      //         {item.title}
-      //         </li>;
     });
   },
   displayAddItemForm(){

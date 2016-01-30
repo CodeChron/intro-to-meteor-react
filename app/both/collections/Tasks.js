@@ -20,6 +20,10 @@ Meteor.methods({
         done: !task.done
        }
     });
+  },
+
+  '/task/delete': function(id) {
+    Tasks.remove({_id: id});
   }
 
 });
