@@ -27,7 +27,7 @@ SingleFieldSubmit = React.createClass({
       <form className="form-inline" onSubmit={this.handleSubmit}>
        <div className="form-group">
          <input
-          className="form-control"
+          className="form-control full-width"
           type="text"
           placeholder={this.props.placeholder}
           value={this.state.inputValue}
