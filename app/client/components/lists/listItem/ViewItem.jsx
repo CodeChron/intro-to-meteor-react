@@ -1,4 +1,4 @@
-ListItem = React.createClass({
+ViewItem = React.createClass({
   propTypes: {
     item: React.PropTypes.object.isRequired
   },
@@ -10,7 +10,12 @@ ListItem = React.createClass({
       ;
   },
   displayDeleteBtn(){
-    return this.props.canDeleteItem? <span className="pull-right li-option"><DeleteBtn id={this.props.item._id}  {...this.props} /></span>: null;
+    return this.props.canDeleteItem? <span className="pull-right li-option"><IconBtn btnTitle="Delete" btnIcon="glyphicon glyphicon-remove"
+      handleClick={this.props.deleteItem} /></span>: null;
+  },
+  displayEditBtn(){
+    return this.props.canEditItem? <span className="pull-right li-option"><IconBtn btnTitle="Edit" btnIcon="glyphicon glyphicon-pencil"
+      handleClick={this.props.editItem} /></span>: null;
   },
   displayWithCheckbox(){
      return  <form className="form-inline">
@@ -34,6 +39,7 @@ ListItem = React.createClass({
   render(){
     return <li key={this.props.key} className="list-group-item">
              {this.displayDeleteBtn()}
+              {this.displayEditBtn()} 
              {this.displayListItem()} 
            </li>;
   }
