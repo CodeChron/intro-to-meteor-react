@@ -14,7 +14,8 @@ List = React.createClass({
   getDefaultProps() {
     return {
       canAddItem: false,
-      canDeleteItem: false
+      canDeleteItem: false,
+      canEditItem: false,
     };
   },
   getCollection(){

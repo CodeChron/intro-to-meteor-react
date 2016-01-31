@@ -39,10 +39,8 @@ ListItem = React.createClass({
         handleUpdates={this.handleUpdates}
         {...this.props} 
       />
-
       :
       <ViewItem
-        toggleEditing={this.toggleEditing}
         deleteItem={this.deleteItem}
         editItem={this.toggleEditing}  
         {...this.props}  

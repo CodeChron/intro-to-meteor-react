@@ -17,10 +17,6 @@ AutoSaveInput = React.createClass({
       content: this.props.content
     };
   },
-  // handleOnBlur(e) {
-  //   // e.stopPropagation();
-  //   this.props.handleDone();
-  // },
   handleOnChange(e){
     const updatedContent = e.target.value;
     const saveInterval = 300;
