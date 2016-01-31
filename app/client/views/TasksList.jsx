@@ -50,7 +50,7 @@ TasksList = React.createClass({
           handleEditItem={this.handleUpdateTitle}
 
           canDeleteItem={true}
-          handleDelete={this.handleDelete}
+          handleDeleteItem={this.handleDelete}
 
           isCheckList={true}
           handleCheckbox={this.handleDone}
