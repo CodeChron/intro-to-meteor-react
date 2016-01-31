@@ -39,12 +39,15 @@ App = React.createClass({
   },
   render() {
 
+    let footerText = <p>Demo app for <a href="https://github.com/CodeChron/intro-to-meteor-react">Intro to Meteor and React</a>.</p>;
+
     return this.data.subReady?
       <div className="app-container">
         <AppHeader appTitle="Meteor React Todo App" userNav={this.showUserNav()} />
        <main className="container">
          {this.props.content}
        </main>
+       <Footer footerTxt={footerText} />
      </div>
     :
       <Loading />
