@@ -3,7 +3,6 @@ function redirectIfNotSignedIn(context, redirect) {
   var notSignedIn = !Meteor.userId() && !Meteor.loggingIn();
   if (notSignedIn) {
     FlowRouter.go('login');
-    sAlert.info("Please sign in to continue.", {effect: 'stackslide', position: 'top-left', timeout: 2500,});
   };
 };
 
