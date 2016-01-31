@@ -12,6 +12,15 @@ Meteor.methods({
     Tasks.insert(taskAttributes);
   },
 
+   '/task/update/title': function(params) {
+    let task = Tasks.findOne({_id: params.id });
+    Tasks.update(task._id, {
+      $set: {
+        title: params.title
+       }
+    });
+  },
+
   '/task/update/done': function(id) {
     let task = Tasks.findOne({_id: id });
     Tasks.update(task._id, {

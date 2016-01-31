@@ -1,8 +1,3 @@
-
-
-
-
-
 @media (min-width: 768px) {
   .form-inline .form-group {
 	   width: 100%;
@@ -11,7 +6,6 @@
 	   width: 100%;
   }
 }
-
 
 .line-through {
 	 text-decoration: line-through;

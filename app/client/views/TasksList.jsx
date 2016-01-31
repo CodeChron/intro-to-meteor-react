@@ -22,6 +22,11 @@ TasksList = React.createClass({
       };
     });
   },
+  handleUpdateTitle(inputValue, id) {
+     Meteor.call('/task/update/title', { title: inputValue, id: id }, function(err, result){
+       if (err) { console.log('there was an error: ' + err.reason); };
+    });
+  },
   handleDelete(id) {
   	let task = Tasks.findOne({_id: id});
     let confirmDelete = confirm("Really delete '" + task.title + "'?");
@@ -36,13 +41,20 @@ TasksList = React.createClass({
   showTasks(){
   	return this.data.subsReady?
        <List
-          collection={this.data.tasks} 
+          collection={this.data.tasks}
+
           handleAddItem={this.handleInsertTask}
           canAddItem={true}
-          isCheckList={true}
+
+          canEditItem={true}
+          handleEditItem={this.handleUpdateTitle}
+
           canDeleteItem={true}
           handleDelete={this.handleDelete}
+
+          isCheckList={true}
           handleCheckbox={this.handleDone}
+          
           newItemPlaceholder="New Task..."
         />
       :
