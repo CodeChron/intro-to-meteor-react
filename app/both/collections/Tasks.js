@@ -1,6 +1,5 @@
 Tasks = new Mongo.Collection('tasks');
 
-
 Meteor.methods({
 
   '/task/insert': function(title) {
