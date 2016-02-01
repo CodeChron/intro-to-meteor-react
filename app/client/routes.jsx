@@ -1,15 +1,5 @@
-function redirectIfNotSignedIn(context, redirect) {
-  AppLibRedirectPath = context.path; 
-  var notSignedIn = !Meteor.userId() && !Meteor.loggingIn();
-  if (notSignedIn) {
-    FlowRouter.go('login');
-  };
-};
-
-
 FlowRouter.route('/', {
   name: 'home',
-  triggersEnter: [redirectIfNotSignedIn],
   action: function() {
     ReactLayout.render(App, {
       content: <TasksList />
@@ -31,16 +21,6 @@ FlowRouter.route('/register', {
   action: function() {
     ReactLayout.render(App, {
       content: <Register />
-    });
-  }
-});
-
-FlowRouter.route('/logout', {
-  name: 'logout',
-  action: function() {
-    Meteor.logout(function(){
-      FlowRouter.go('home');
-      sAlert.info("You've been signed out.", {effect: 'stackslide', position: 'top-left', timeout: 2000,});
     });
   }
 });
