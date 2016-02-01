@@ -27,10 +27,11 @@ TasksList = React.createClass({
        if (err) { console.log('there was an error: ' + err.reason); };
     });
   },
-  handleDelete(item) {
-    let confirmDelete = confirm("Really delete '" + item.title + "'?");
+  handleDeleteTask(task) {
+    let confirmDelete = confirm("Really delete '" + task.title + "'?");
     if(confirmDelete){
-      Meteor.call('/task/delete',item._id, function(err, result) {
+      Meteor.call('/task/delete',task._id, function(err, result) {
+
         if (err) {
           console.log('there was an error: ' + err.reason);
         };
@@ -42,14 +43,14 @@ TasksList = React.createClass({
        <List
           collection={this.data.tasks}
 
-          handleAddItem={this.handleInsertTask}
           canAddItem={true}
+          handleAddItem={this.handleInsertTask}
 
           canEditItem={true}
           handleUpdateTitle={this.handleUpdateTitle}
 
           canDeleteItem={true}
-          handleDeleteItem={this.handleDelete}
+          handleDeleteItem={this.handleDeleteTask}
 
           isCheckList={true}
           handleCheckbox={this.handleDone}
