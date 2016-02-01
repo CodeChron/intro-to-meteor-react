@@ -15,22 +15,12 @@ ListItem = React.createClass({
   toggleEditing() {
     this.setState({editing: !this.state.editing });
   },
-   displayItem() {
-    return this.props.canEditItem?
-      this.displayEditableItem()
-      :
-      <ViewListItem
-        {...this.props}  deleteItem={this.deleteItem}     
-      />
-      ;
+  handleUpdates(inputValue){
+    this.props.handleUpdateTitle(inputValue, this.props.item._id);
   },
   deleteItem(){
     this.props.handleDeleteItem(this.props.item);
   },
-  handleUpdates(inputValue){
-    this.props.handleUpdateTitle(inputValue, this.props.item._id);
-  },
- 
   displayEditableItem() {
     return this.state.editing?
       <EditItem
@@ -44,6 +34,15 @@ ListItem = React.createClass({
         deleteItem={this.deleteItem}
         editItem={this.toggleEditing}  
         {...this.props}  
+      />
+      ;
+  },
+     displayItem() {
+    return this.props.canEditItem?
+      this.displayEditableItem()
+      :
+      <ViewListItem
+        {...this.props}  deleteItem={this.deleteItem}     
       />
       ;
   },
