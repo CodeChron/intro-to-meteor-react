@@ -10,7 +10,7 @@ ListItem = React.createClass({
       ;
   },
   displayDeleteBtn(){
-    return this.props.canDeleteItem? <span className="pull-right li-option"><DeleteBtn id={this.props.item._id}  {...this.props} /></span>: null;
+    return this.props.canDeleteItem? <span className="pull-right li-option"><DeleteBtn  handleDelete={this.handleDeleteItem}  /></span>: null;
   },
   displayWithCheckbox(){
      return  <form className="form-inline">
@@ -23,6 +23,9 @@ ListItem = React.createClass({
   },
   handleCheckbox(e){
     this.props.handleCheckbox(this.props.item);
+  },
+  handleDeleteItem(){
+    this.props.handleDeleteItem(this.props.item);
   },
   displayListItem(){
     return this.props.isCheckList? 

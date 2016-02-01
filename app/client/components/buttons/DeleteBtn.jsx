@@ -1,18 +1,15 @@
 DeleteBtn = React.createClass({
   propTypes: {
-    id: React.PropTypes.string.isRequired
+    handleDelete:    React.PropTypes.func.isRequired
   },
   getDefaultProps() {
     return {
       title: "Delete"
     };
   },
-  handleDelete(e){
-    this.props.handleDelete(this.props.id);
-  },
   render() {
     return <button 
-        onClick={this.handleDelete}
+        onClick={this.props.handleDelete}
         className="btn btn-default btn-xs"
         title={this.props.btnTitle}
         alt={this.props.btnTitle}>
