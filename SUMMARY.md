@@ -12,5 +12,5 @@
 * [Creating the Todo List](docs/creating_the_todo_list.md)
 * [Add New Tasks](docs/add_new_tasks.md)
 * [View Tasks](docs/view_tasks.md)
-* [Marking Tasks as Dine](docs/marking_tasks_as_done.md)
+* [Marking Tasks as Done](docs/marking_tasks_as_done.md)
 
