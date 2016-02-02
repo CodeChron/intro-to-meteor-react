@@ -6,5 +6,5 @@
 * [App Overview](docs/app_overview.md)
 * [React Setup](docs/react_setup.md)
 * [Routing and Main App Views](docs/routing_and_main_app_views.md)
-* Add AppHeader and UserNav
+* [Add AppHeader and UserNav](docs/add_appheader_and_usernav.md)
 
