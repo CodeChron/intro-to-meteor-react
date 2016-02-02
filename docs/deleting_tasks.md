@@ -23,8 +23,6 @@ Meteor.methods({
   }
 });
 ```
-
-
 ## Add a delete handler in the controller component
 
 ``` /client/views/TasksList.jsx: ```
@@ -46,7 +44,6 @@ TasksList = React.createClass({
 
   render() {
 
-    return this.data.subsReady?
       <List
         ...
         canDeleteItem={true}
@@ -60,6 +57,12 @@ TasksList = React.createClass({
 
 ```js
 
+
+## Update the List component
+
+Add props to support deletion.
+
+```js
 List = React.createClass({
   propTypes: {
   ...
@@ -78,6 +81,9 @@ List = React.createClass({
 
 ```
 
+## DeleteBtn component
+
+Create a component for handling the delete button.
 
 ```js
 DeleteBtn = React.createClass({
@@ -101,6 +107,10 @@ DeleteBtn = React.createClass({
 });
 ```
 
+## ListItem updates
+
+Add support for displaying the Delete button.
+
 ```js
 ListItem = React.createClass({
 ...
@@ -118,3 +128,5 @@ ListItem = React.createClass({
   }
 });
 ```
+
+You should now be able to click on the delete button, see a confirmation message, and delete a list item.
