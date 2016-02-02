@@ -10,7 +10,7 @@ In this tutorial, we’re going to build a Todo app using Meteor and React.  We'
 - Clone the demo repo: ```git clone https://github.com/CodeChron/intro-to-meteor-react.git```
 
 
-<p><strong>[Start the tutorial](https://www.gitbook.com/book/codechron/build-an-app-with-meteor-and-react/details)</strong></p>
+<p><strong> [Start the tutorial](https://www.gitbook.com/book/codechron/build-an-app-with-meteor-and-react/details) </strong></p>
 
 ## Additional Reading/Resources
 - [Architecting your app with React](https://lincolnloop.com/blog/architecting-your-app-react-part-1/)
