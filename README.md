@@ -1,4 +1,4 @@
-#Introduction to Meteor and React
+#Build an App with Meteor and React
 
 <div style="text-align:center">
 <a href="http://intro-to-meteor-react.meteor.com/"><img width="600" alt="screen shot 2016-01-31 at 5 23 24 pm" src="https://cloud.githubusercontent.com/assets/819213/12705378/653eea50-c83f-11e5-9e10-db3fc4dc5236.png"></a></div></div>
