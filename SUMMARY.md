@@ -14,5 +14,5 @@
 * [View Tasks](docs/view_tasks.md)
 * [Marking Tasks as Done](docs/marking_tasks_as_done.md)
 * [Deleting Tasks](docs/deleting_tasks.md)
-* Edit Tasks
+* [Edit Tasks](docs/edit_tasks.md)
 
