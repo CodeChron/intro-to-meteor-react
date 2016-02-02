@@ -8,4 +8,5 @@
 * [Routing and Main App Views](docs/routing_and_main_app_views.md)
 * [Add AppHeader and UserNav](docs/add_appheader_and_usernav.md)
 * [User Authentication](docs/user_authentication.md)
+* Getting (User) Data
 
