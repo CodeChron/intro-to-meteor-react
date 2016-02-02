@@ -5,4 +5,5 @@
 * [App Setup](docs/01-app-setup.md)
 * [App Overview](docs/app_overview.md)
 * [React Setup](docs/react_setup.md)
+* Routing and Main App Views
 
