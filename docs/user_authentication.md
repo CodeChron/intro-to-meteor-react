@@ -7,7 +7,6 @@
 
 _Add basic login and registration_
 
-
 ### Adding Login/Registration Manually
 Meteor comes with a nice package that gives you everything you need for basic Login/Registration.  [Here's how to add it to a React app](https://www.meteor.com/tutorials/react/adding-user-accounts).
 
