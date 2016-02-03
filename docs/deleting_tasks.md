@@ -5,9 +5,7 @@
 
 # Step 11: Deleting Tasks
 
-_Overview_
-
-We'll take the same approach as before in adding the delete feature, working from top to bottom. 
+_We'll take the same approach as before in adding the delete feature, working from top to bottom._
 
 
 ## Add db support for deletion
