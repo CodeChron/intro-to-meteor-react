@@ -1,7 +1,7 @@
 # Summary
 
 * [Introduction](README.md)
-* [Introduction](docs/00-intro.md)
+* [Introduction](docs/intro-tmp.md/introtmp.md)
 * [App Setup](docs/01-app-setup.md)
 * [App Overview](docs/app_overview.md)
 * [React Setup](docs/react_setup.md)
