@@ -1,14 +1,10 @@
-# Step 4: Add AppHeader and UserNav
 *Get caught up to this step*
 
 - Check out the branch for the previous step: ```git checkout 03-routing``` 
 
 <hr>
 
-_Overview_
-
-In this step, we'll do some basic setup for using React in a Meteor app.
-
+# Step 4: Add AppHeader and UserNav
 
 **Add a AppHeader component:**
 
